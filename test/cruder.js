@@ -22,9 +22,24 @@ describe('Cruder', () => {
       assert.equal(1, result.rows[0].number)
     })
   })
-  it('Cruder get', () => {
+
+  xit('Cruder get party', () => {
     return cruder.get('party').then((result) => {
       assert.equal(7, result.rows.length)
-    })
+    }).catch((err) => console.log(err))
   })
+
+  xit('Cruder get liability', () => {
+    return cruder.get('liability').then((result) => {
+      assert.equal(4, result.rows.length)
+    }).catch((err) => console.log(err))
+  })
+
+  it('Cruder get addRelated', () => {
+    return cruder.get('liability').then(cruder.addRelated('liabilities')).then((result) => {
+      assert.equal(4, result.rows.length)
+      console.log(result.rows);
+    }).catch((err) => console.log(err))
+  })
+
 })
