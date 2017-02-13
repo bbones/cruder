@@ -1,16 +1,21 @@
-let f1 = function () {
-  return new Promise((resolve, reject) => {
-    resolve([1, 2])
-  })
+'use strict'
+
+class A {
+  constructor() {
+
+  }
+
+  b () {
+    console.log('a');
+  }
+
+  c () {
+    this.b()
+    console.log('b');
+  }
 }
 
-let f2 = function (values) {
-  console.log(values)
-  return new Promise((resolve, reject) => {
-    resolve([values, [3, 4]])
-  })
-}
+var a = new A();
 
-f1().then(f2([5, 6])).then((val) => {
-  console.log(val)
-})
+a.b()
+a.c()
