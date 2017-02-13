@@ -1,9 +1,11 @@
 # cruder
 
-PostgreSQL repository
+**PostgreSQL repository**
 
-Call example
 
+## Call example
+
+```javascript
 get(
   entity,
   {
@@ -37,3 +39,4 @@ get(
     }
   }
 })
+```
