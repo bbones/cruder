@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it, xit */
 
 var assert = require('chai').assert
 var Cruder = require('../src/cruder')
@@ -23,7 +23,7 @@ describe('Cruder', () => {
     })
   })
 
-  xit('Cruder get party', () => {
+  it('Cruder get party', () => {
     return cruder.get('party').then((result) => {
       assert.equal(7, result.rows.length)
     }).catch((err) => console.log(err))
@@ -35,7 +35,7 @@ describe('Cruder', () => {
     }).catch((err) => console.log(err))
   })
 
-  it('Cruder get addRelated', () => {
+  xit('Cruder get addRelated', () => {
     return cruder.get('liability').then(cruder.addRelated('liabilities')).then((result) => {
       assert.equal(4, result.rows.length)
       console.log(result.rows);
