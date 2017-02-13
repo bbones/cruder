@@ -20,15 +20,21 @@ class Cruder {
             reject(err)
             return
           }
-          resolve(result)
+          resolve(result.rows)
           // output: 1
         })
       })
     })
   }
 
-  get (entity) {
+  get (entity, options) {
     return this.query('select * from treasury.' + entity)
+  }
+
+  addRelated (data, relations) {
+    return new Promise((resolve, reject) => {
+      resolve(data, relations)
+    })
   }
 }
 

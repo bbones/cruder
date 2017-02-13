@@ -12,20 +12,15 @@ const config = {
 
 let cruder = new Cruder(config)
 
-function *main () {
-  try {
-    var ret = yield cruder.get('party')
-    console.log(ret)
-  } catch (err) {
-    console.log(err)
-  }
-}
+// function *main () {
+//   try {
+//     var ret = yield cruder.get('party')
+//     console.log(ret)
+//   } catch (err) {
+//     console.log(err)
+//   }
+// }
 
-// cruder.get('party').then((result) => {
-//   console.log('party', result.rows)
-//   return new Promise((resolve, reject) => {
-//     resolve(result.rows, cruder.get('liability'))
-//   })
-// }).then((result) => console.log('result', result)).catch((err) => console.log(err))
-
-main()
+cruder.get('party', {relations: ['liability']})
+  .then((result, relations) => console.log('result', result, relations))
+  .catch((err) => console.log(err))

@@ -29,17 +29,19 @@ describe('Cruder', () => {
     }).catch((err) => console.log(err))
   })
 
-  xit('Cruder get liability', () => {
+  it('Cruder get liability', () => {
     return cruder.get('liability').then((result) => {
-      assert.equal(4, result.rows.length)
+      assert.equal(3, result.rows.length)
     }).catch((err) => console.log(err))
   })
 
-  xit('Cruder get addRelated', () => {
-    return cruder.get('liability').then(cruder.addRelated('liabilities')).then((result) => {
-      assert.equal(4, result.rows.length)
-      console.log(result.rows);
-    }).catch((err) => console.log(err))
+  it('Cruder get addRelated', () => {
+    return cruder.get('party', {relations: ['liability']})
+      .then((result) => {
+        assert.equal(7, result.rows.length)
+        console.log(result.rows)
+      })
+      .catch((err) => console.log(err))
   })
 
 })
