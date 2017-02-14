@@ -27,21 +27,23 @@ class Cruder {
     })
   }
 
-  get (entity, options) {
-    return this.getMain(entity, options).then(this.addRelated);
-  }
-
   getMain (entity, options) {
     return Promise.all(
-      [this.query('select * from treasury.' + entity), options])
+      [options, this.query('select * from treasury.' + entity)])
   }
 
-  addRelated ([data, options]) {
-    console.log('ar this', this)
-    return Promise.all(options.relations.map((name) => {
-      console.log('ar', name)
-      return this.query('select * from treasury.' + name)
-    }))
+  addRelated ([options, data]) {
+    let promises = [options, data]
+    if (options && options.relations) {
+      options.relations.map((name) =>
+        promises.push(this.query('select * from treasury.' + name)))
+    }
+    return Promise.all(promises)
+  }
+
+  get (entity, options) {
+    return this.getMain(entity, options)
+      .then(result => this.addRelated(result))
   }
 }
 

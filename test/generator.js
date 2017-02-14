@@ -21,6 +21,6 @@ let cruder = new Cruder(config)
 //   }
 // }
 
-cruder.getMain('party', {relations: ['liability']}).then(cruder.addRelated)
-  .then((result, relations) => console.log('result', result))
+cruder.get('party', {relations: ['liability', 'unit']})
+  .then((result) => console.log('result', result))
   .catch((err) => console.log(err))

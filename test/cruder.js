@@ -19,29 +19,31 @@ describe('Cruder', () => {
   })
   it('Cruder query', () => {
     return cruder.query('SELECT $1::int AS number', ['1']).then((result) => {
-      assert.equal(1, result.rows[0].number)
+      // console.log(result)
+      assert.equal(1, result[0].number)
     })
   })
 
   it('Cruder get party', () => {
-    return cruder.get('party').then((result) => {
-      assert.equal(7, result.rows.length)
+    return cruder.get('party').then(([options, data, relations]) => {
+      // console.log(data)
+      assert.equal(7, data.length)
     }).catch((err) => console.log(err))
   })
 
   it('Cruder get liability', () => {
-    return cruder.get('liability').then((result) => {
-      assert.equal(3, result.rows.length)
+    return cruder.get('liability').then(([options, data, relations]) => {
+      // console.log(result)
+      assert.equal(3, data.length)
     }).catch((err) => console.log(err))
   })
 
   it('Cruder get addRelated', () => {
-    return cruder.get('party', {relations: ['liability']})
-      .then((result) => {
-        assert.equal(7, result.rows.length)
-        console.log(result.rows)
+    return cruder.get('party', {relations: ['liability', 'unit']})
+      .then(([options, data, relations]) => {
+        assert.equal(7, data.length)
+        // console.log(options, data, relations)
       })
       .catch((err) => console.log(err))
   })
-
 })

@@ -11,7 +11,7 @@ get(
   {
     relations : [
       {
-        name : collectionAttr,
+        name : collectionAttr, // Convention based: if singular - M:1 if plural - 1:M
         entity : ent1,
         key : [keyfields]
       }
