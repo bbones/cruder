@@ -33,14 +33,14 @@ class Cruder {
 
   getMain (entity, options) {
     return Promise.all(
-      [this.query('select * from treasury.' + entity), options, crdr])
+      [this.query('select * from treasury.' + entity), options])
   }
 
   addRelated ([data, options]) {
     console.log('ar this', this)
     return Promise.all(options.relations.map((name) => {
       console.log('ar', name)
-      return crdr.query('select * from treasury.' + name)
+      return this.query('select * from treasury.' + name)
     }))
   }
 }
