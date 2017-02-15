@@ -1,42 +1,32 @@
 const pg = require('pg')
+const pluralize = require('pluralize')
 
 class Cruder {
-  constructor (config) {
+  constructor (config, dbschema, tabNameSingular = true) {
     this.pool = new pg.Pool(config)
+    this.tabNameSingular = tabNameSingular
+    this.dbschema = dbschema
   }
 
-  query (querystr, params) {
-    return new Promise((resolve, reject) => {
-      this.pool.connect((err, client, done) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        client.query(querystr, params, (err, result) => {
-          // call `done()` to release the client back to the pool
-          done()
-          if (err) {
-            done()
-            reject(err)
-            return
-          }
-          resolve(result.rows)
-          // output: 1
-        })
-      })
-    })
+  getTabName (entityName) {
+    return this.tabNameSingular ? pluralize.singular(entityName)
+        : pluralize.plural(entityName)
   }
 
   getMain (entity, options) {
     return Promise.all(
-      [options, this.query('select * from treasury.' + entity)])
+      [options, this.pool.query('select * from ' +
+          this.dbschema +
+          this.getTabName(entity))])
   }
 
   addRelated ([options, data]) {
     let promises = [options, data]
     if (options && options.relations) {
-      options.relations.map((name) =>
-        promises.push(this.query('select * from treasury.' + name)))
+      options.relations.map((entity) =>
+        promises.push(this.pool.query('select * from ' +
+            this.dbschema +
+            this.getTabName(entity))))
     }
     return Promise.all(promises)
   }

@@ -11,10 +11,6 @@ const config = {
 }
 let cruder = new Cruder(config)
 
-cruder.query('SELECT $1::int AS number', ['1'])
-  .then((result) => console.log(result.rows))
-  .catch((err) => console.log(err))
-
 cruder.get('party', {relations : [{name: 'liabilities'}]})
   .then((result) => console.log(result.rows))
   .catch((err) => console.log(err))

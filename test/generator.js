@@ -1,4 +1,4 @@
-var Cruder = require('../src/cruder')
+const pg = require('pg')
 
 const config = {
   user: 'bbones', // env var: PGUSER
@@ -10,17 +10,22 @@ const config = {
   idleTimeoutMillis: 3000 // how long a client is allowed to remain idle before being closed
 }
 
-let cruder = new Cruder(config)
+var pool = new pg.Pool(config)
 
-// function *main () {
-//   try {
-//     var ret = yield cruder.get('party')
-//     console.log(ret)
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
+function *main () {
+  var client = yield pool.connect()
+  try {
+    var result = yield client.query('SELECT $1::text as name', ['foo'])
+    yield console.log(result)
+    // yield client.query('INSERT INTO something(name) VALUES($1)', [result.rows[0].name])
+    client.release()
+  } catch (e) {
+    // pass truthy value to release to destroy the client
+    // instead of returning it to the pool
+    // the pool will create a new client next time
+    // this will also roll back the transaction within postgres
+    client.release(true)
+  }
+}
 
-cruder.get('party', {relations: ['liability', 'unit']})
-  .then((result) => console.log('result', result))
-  .catch((err) => console.log(err))
+main()

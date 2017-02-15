@@ -13,35 +13,31 @@ describe('Cruder', () => {
     max: 10, // max number of clients in the pool
     idleTimeoutMillis: 30000 // how long a client is allowed to remain idle before being closed
   }
-  let cruder = new Cruder(config)
+  let cruder = new Cruder(config, 'treasury.')
+
   it('Cruder created', () => {
     assert.isOk(cruder, 'Wasnt created')
-  })
-  it('Cruder query', () => {
-    return cruder.query('SELECT $1::int AS number', ['1']).then((result) => {
-      // console.log(result)
-      assert.equal(1, result[0].number)
-    })
   })
 
   it('Cruder get party', () => {
     return cruder.get('party').then(([options, data, relations]) => {
       // console.log(data)
-      assert.equal(7, data.length)
+      assert.equal(data.rows.length, 7)
     }).catch((err) => console.log(err))
   })
 
   it('Cruder get liability', () => {
     return cruder.get('liability').then(([options, data, relations]) => {
       // console.log(result)
-      assert.equal(3, data.length)
+      assert.equal(data.rows.length, 3)
     }).catch((err) => console.log(err))
   })
 
   it('Cruder get addRelated', () => {
-    return cruder.get('party', {relations: ['liability', 'unit']})
+    return cruder.get('party', {relations: ['liabilities', 'unit']})
       .then(([options, data, relations]) => {
-        assert.equal(7, data.length)
+        assert.equal(data.rows.length, 7)
+        assert.isOk(data.rows[0].relations)
         // console.log(options, data, relations)
       })
       .catch((err) => console.log(err))
