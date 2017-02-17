@@ -18,28 +18,40 @@ describe('Cruder', () => {
   it('Cruder created', () => {
     assert.isOk(cruder, 'Wasnt created')
   })
+  describe('Cruder utility', () => {
+    it('Make Sentence void', () => {
+      assert.equal(cruder.getSentence(),
+        'select * from ')
+    })
 
-  it('Cruder get party', () => {
-    return cruder.get('party').then(([options, data, relations]) => {
-      // console.log(data)
-      assert.equal(data.rows.length, 7)
-    }).catch((err) => console.log(err))
+    it('Make Sentence array', () => {
+      assert.equal(cruder.getSentence(['attr1', 'attr2']),
+        'select attr1, attr2 from ')
+    })
   })
-
-  it('Cruder get liability', () => {
-    return cruder.get('liability').then(([options, data, relations]) => {
-      // console.log(result)
-      assert.equal(data.rows.length, 3)
-    }).catch((err) => console.log(err))
-  })
-
-  it('Cruder get addRelated', () => {
-    return cruder.get('party', {relations: ['liabilities', 'unit']})
-      .then(([options, data, relations]) => {
+  describe('Cruder methods', () => {
+    it('Cruder get party', () => {
+      return cruder.get('party').then(([options, data, relations]) => {
+        // console.log(data)
         assert.equal(data.rows.length, 7)
-        assert.isOk(data.rows[0].relations)
-        // console.log(options, data, relations)
-      })
-      .catch((err) => console.log(err))
+      }).catch((err) => console.log(err))
+    })
+
+    it('Cruder get liability', () => {
+      return cruder.get('liability').then(([options, data, relations]) => {
+        // console.log(result)
+        assert.equal(data.rows.length, 3)
+      }).catch((err) => console.log(err))
+    })
+
+    it('Cruder get addRelated', () => {
+      return cruder.get('party', {relations: ['liabilities', 'unit']})
+        .then(([options, data, relations]) => {
+          assert.equal(data.rows.length, 7)
+          assert.isOk(data.rows[0].relations)
+          // console.log(options, data, relations)
+        })
+        .catch((err) => console.log(err))
+    })
   })
 })

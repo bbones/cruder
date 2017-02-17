@@ -13,6 +13,17 @@ class Cruder {
         : pluralize.plural(entityName)
   }
 
+  getSentence (attrList) {
+    let result = 'select '
+    if (attrList) {
+      attrList.map((name) => {
+        result += (result === 'select ') ? name : ', ' + name
+      })
+    } else result += '*'
+    result += ' from '
+    return result
+  }
+
   getMain (entity, options) {
     return Promise.all(
       [options, this.pool.query('select * from ' +
