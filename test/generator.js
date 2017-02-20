@@ -12,7 +12,7 @@ const config = {
 
 var pool = new pg.Pool(config)
 
-function *main () {
+function* main () {
   var client = yield pool.connect()
   try {
     var result = yield client.query('SELECT $1::text as name', ['foo'])
@@ -28,4 +28,6 @@ function *main () {
   }
 }
 
-main()
+main().next()
+main().next()
+main().next()

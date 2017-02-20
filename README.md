@@ -67,3 +67,27 @@ getOne(
   }
 )
 ```
+## Output
+JSONAPI
+```
+{
+  data: [
+    {
+      id:0,   type: 'liabilities',
+      attributes: [{amount: 100}],
+      relationships: [
+        {
+          enterprise: {
+            id: 3,
+            type: 'enterprises',
+            data: {
+              attributes: [
+                {names: "Progenex"}
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
